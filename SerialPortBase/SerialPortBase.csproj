@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9B9D5725-1239-41A7-A809-F54E5CF82E10}</ProjectGuid>
+    <ProjectGuid>{5688201B-529C-4C34-9C85-F0ADC5FE861A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PingDog</RootNamespace>
-    <AssemblyName>PingDog</AssemblyName>
+    <RootNamespace>SerialPortBase</RootNamespace>
+    <AssemblyName>SerialPortBase</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -27,19 +27,13 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\xfer\pingdog\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.Realterm">
-      <HintPath>..\PInvokeSerialPort\obj\x86\Release\Interop.Realterm.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,36 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\CheckTimerIntervalGetter.cs" />
-    <Compile Include="Factory\PDFactory.cs" />
-    <Compile Include="Factory\RealTerminal.cs" />
-    <Compile Include="Interface\ICheckTimerIntervalGetter.cs" />
-    <Compile Include="Interface\ISerialPortGetter.cs" />
-    <Compile Include="Interface\IServerResetter.cs" />
-    <Compile Include="Interface\ITestModeGetter.cs" />
-    <Compile Include="Interface\IWaitTimerIntervalGetter.cs" />
-    <Compile Include="Interface\IWatchDogRunner.cs" />
-    <Compile Include="Facade\PDFacade.cs" />
-    <Compile Include="Entity\SerialPortGetter.cs" />
-    <Compile Include="Entity\ServerResetter.cs" />
-    <Compile Include="Entity\TestModeGetter.cs" />
-    <Compile Include="Entity\WaitTimerIntervalGetter.cs" />
-    <Compile Include="Entity\WatchDogRunner.cs" />
-    <Compile Include="Model\IPDModel.cs" />
-    <Compile Include="Model\PDModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PInvokeSerialPort\PInvokeSerialPort.csproj">
-      <Project>{aec711a5-aa9b-4127-a82c-c4d8fda9741a}</Project>
-      <Name>PInvokeSerialPort</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
