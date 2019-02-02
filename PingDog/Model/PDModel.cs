@@ -5,11 +5,14 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PInvokeSerialPort;
 
 namespace PingDog.Model
 {
     internal class PDModel : IPDModel
     {
+        private static PInvokeSerialPort.SerialPort _PISerialPort;
+
         public double CheckDelay
         {
             get
@@ -34,6 +37,20 @@ namespace PingDog.Model
             }
         }
 
+        public PInvokeSerialPort.SerialPort PISerialPort
+        {
+            get
+            {
+                if (_PISerialPort==null)
+                {
+                    _PISerialPort = new PInvokeSerialPort.SerialPort(PortName);
+                    _PISerialPort.UseRts = HsOutput.Online;
+
+                }
+                return _PISerialPort;
+            }
+        }
+
         public int PortIndex
         {
             get
@@ -54,7 +71,7 @@ namespace PingDog.Model
         {
             get
             {
-                return SerialPort.GetPortNames();
+                return System.IO.Ports.SerialPort.GetPortNames();
             }
         }
 

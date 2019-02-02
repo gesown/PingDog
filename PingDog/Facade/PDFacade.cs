@@ -1,10 +1,9 @@
-﻿using System.IO.Ports;
-using PingDog.Model;
+﻿using PingDog.Model;
 using PingDog.Interface;
 using PingDog.Entity;
-using System;
 using PingDog.Factory;
 using Realterm;
+using System.Collections.Generic;
 
 namespace PingDog.Facade
 {
@@ -13,10 +12,18 @@ namespace PingDog.Facade
         private static PDModel _PDModel;
         private static PDFactory _PDFactory;
 
+        public static bool IsServerOn { get; internal set; }
+
         internal static bool RunWatchDog()
         {
             IWatchDogRunner wdr = new WatchDogRunner();
             return wdr.RunWatchDog();
+        }
+
+        internal static bool GetDebugMode()
+        {
+            IDebugModeGetter tmg = new DebugModeGetter();
+            return tmg.GetDebugMode();
         }
 
         internal static IRealtermIntf GetTerminal()
@@ -26,6 +33,30 @@ namespace PingDog.Facade
                 _PDFactory = new PDFactory();
             }
             return _PDFactory.RealTerminal;
+        }
+
+        internal static string GetIpToPing()
+        {
+            IIpToPingGetter tmg = new IpToPingGetter();
+            return tmg.GetIpToPing();
+        }
+
+        internal static IEnumerable<string> GetPortNames()
+        {
+            IPortNamesGetter png = new PortNamesGetter();
+            return png.GetPortNames();
+        }
+
+        internal static int GetPortIndex()
+        {
+            IPortIndexGetter pig = new PortIndexGetter();
+            return pig.GetPortIndex();
+        }
+
+        internal static string GetPortName()
+        {
+            IPortNameGetter tmg = new PortNameGetter();
+            return tmg.GetPortName();
         }
 
         internal static IPDModel GetPDModel()
@@ -43,7 +74,7 @@ namespace PingDog.Facade
             sr.ResetServer(reset);
         }
 
-        internal static SerialPort GetSerialPort()
+        internal static PInvokeSerialPort.SerialPort GetSerialPort()
         {
             ISerialPortGetter spg = new SerialPortGetter();
             return spg.GetSerialPort();

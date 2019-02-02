@@ -4,6 +4,6 @@ namespace PingDog.Interface
 {
     internal interface ISerialPortGetter
     {
-        SerialPort GetSerialPort();
+        PInvokeSerialPort.SerialPort GetSerialPort();
     }
 }

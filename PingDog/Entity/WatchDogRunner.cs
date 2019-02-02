@@ -20,8 +20,17 @@ namespace PingDog.Entity
                 }
                 catch (PingException ex)
                 {
-                    Console.Write(" ping error: " + ex.Message);
-                    var exM = ex.Message;
+                    Console.WriteLine();
+                    Console.WriteLine(" ping error: " + ex.Message);
+                    Console.WriteLine();
+                    if (!PDFacade.IsServerOn)
+                    {
+                        PDFacade.ResetServer(false);
+                        PDFacade.IsServerOn = true;
+                        Console.WriteLine();
+                        Console.WriteLine("Server Initial Power On.");
+                        Console.WriteLine();
+                    }
                 }
                 finally
                 {
@@ -30,7 +39,7 @@ namespace PingDog.Entity
                         pinger.Dispose();
                     }
                 }
-                Console.Write(" p ");
+                Console.WriteLine(" ping ");
                 return pingable;
             }
         }

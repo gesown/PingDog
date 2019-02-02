@@ -27,7 +27,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\xfer\pingdog\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -50,6 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\CheckTimerIntervalGetter.cs" />
+    <Compile Include="Entity\DebugModeGetter.cs" />
+    <Compile Include="Interface\IPortIndexGetter.cs" />
+    <Compile Include="Interface\IPortNamesGetter.cs" />
+    <Compile Include="Entity\PortIndexGetter.cs" />
+    <Compile Include="Entity\PortNamesGetter.cs" />
+    <Compile Include="Interface\IPortNameGetter.cs" />
+    <Compile Include="Entity\PortNameGetter.cs" />
+    <Compile Include="Interface\IIpToPingGetter.cs" />
+    <Compile Include="Entity\IpToPingGetter.cs" />
+    <Compile Include="Interface\IDebugModeGetter.cs" />
     <Compile Include="Factory\PDFactory.cs" />
     <Compile Include="Factory\RealTerminal.cs" />
     <Compile Include="Interface\ICheckTimerIntervalGetter.cs" />

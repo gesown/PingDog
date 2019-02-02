@@ -1,4 +1,6 @@
-﻿namespace PingDog.Model
+﻿using PInvokeSerialPort;
+
+namespace PingDog.Model
 {
     internal interface IPDModel
     {
@@ -10,5 +12,6 @@
         double WaitDelay { get;  }
         bool TestMode { get;  }
         bool Debug { get; }
+        SerialPort PISerialPort { get;  }
     }
 }

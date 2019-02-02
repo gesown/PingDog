@@ -1,16 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Timers;
-using PingDog.Interface;
 using PingDog.Facade;
 using PingDog.Model;
+using Threading = System.Threading;
 
 namespace PingDog
 {
-    /// <summary>
-    /// ModulePort - Serial port for connection to reset module
-    /// PingPort - IP of monitored system
-    /// Usage: PingDog {ModulePort} {PingPort}
-    /// </summary>
     class Program
     {
         public static Timer checkTimer = new Timer();
@@ -18,14 +14,43 @@ namespace PingDog
         private static IPDModel model;
 
         public static bool TestMode { get { return PDFacade.GetTestMode(); } }
-        public static double CheckTimerInterval { get { return PDFacade.GetCheckTimerInterval(); } }
-        public static double WaitTimerInterval { get { return PDFacade.GetWaitTimerInterval(); } }
+        public static bool Debug { get { return PDFacade.GetDebugMode(); } }
+        public static double CheckTimerInterval { get { return PDFacade.GetCheckTimerInterval(); } } // Time to wait for ping response
+        public static double WaitTimerInterval { get { return PDFacade.GetWaitTimerInterval(); } } // Time to wait between pings and for server reset
+        public static string IpToPing { get { return PDFacade.GetIpToPing(); } }
+
+        public static string PortName { get { return PDFacade.GetPortName(); } }
+
+        public static IEnumerable<string> PortNames { get { return PDFacade.GetPortNames(); } }
+
+        public static int PortIndex { get { return PDFacade.GetPortIndex(); } }
 
         static void Main(string[] args)
         {
+            Console.WriteLine(" Debug Mode: " + Debug);
+            Console.WriteLine(" Test Mode: " + TestMode);
+            Console.WriteLine(" Check Timer Interval: " + CheckTimerInterval);
+            Console.WriteLine(" Wait Timer Interval: " + WaitTimerInterval);
+            Console.WriteLine(" Ip To Ping: " + IpToPing);
+            Console.WriteLine(" Serial Ports Available: ");
+            foreach (var portname in PortNames)
+            {
+                Console.WriteLine(portname);
+            }
+            Console.WriteLine(" Serial Port Name Index: " + PortIndex);
+            Console.WriteLine(" Serial Port Name: " + PortName);
             InitializeTimers();
-             model = PDFacade.GetPDModel();
+            Console.WriteLine("Hit Any Key to Exit.");
+            Threading.Thread.Sleep(1000);
+            PDFacade.ResetServer(false);
+            if (!PDFacade.IsServerOn) { DisableTimers(); }
             Console.Read();
+        }
+
+        private static void DisableTimers()
+        {
+            checkTimer.Enabled = false;
+            waitTimer.Enabled = false;
         }
 
         private static void InitializeTimers()
@@ -37,25 +62,27 @@ namespace PingDog
             checkTimer.Enabled = true;
         }
 
-        private static void WaitTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private static void WaitTimer_Elapsed(object sender, ElapsedEventArgs e) // Time to resume ping after server power cycle or recheck after delay
         {
-          if(model.Debug)  Console.Write("  Waiting");
             waitTimer.Enabled = false;
-            PDFacade.ResetServer(false);
             checkTimer.Enabled = true;
         }
 
-        private static void CheckTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private static void CheckTimer_Elapsed(object sender, ElapsedEventArgs e) // Ping server
         {
-            if (model.Debug) Console.Write("  Checking");
+            if (Debug) Console.WriteLine("  Pinging..  ");
             checkTimer.Enabled = false;
             var pingResult = PDFacade.RunWatchDog();
-            if (model.Debug) Console.Write("  Ping Ok: "+pingResult.ToString());
-            if (!TestMode && !pingResult || TestMode)
+            if (Debug) Console.WriteLine("  Ping Ok? " + pingResult.ToString());
+            if (!TestMode && !pingResult || TestMode) // Always resets server if in test mode or ping fails
             {
-                PDFacade.ResetServer(true);
+                if (PDFacade.IsServerOn) { PDFacade.ResetServer(true); }// Cut power to server
+                if (Debug) Console.WriteLine("  Server Power Off ");
+                Threading.Thread.Sleep(1000); // Wait for server to power down
+                if (!PDFacade.IsServerOn) { PDFacade.ResetServer(false); } // Power on to server
+                if (Debug) Console.WriteLine("  Server Power On ");
             }
-            waitTimer.Enabled = true;
+            waitTimer.Enabled = true; // Delay check until server resets or time to ping again
         }
     }
 }

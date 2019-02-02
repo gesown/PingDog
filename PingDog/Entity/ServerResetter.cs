@@ -1,50 +1,44 @@
 ﻿using PingDog.Facade;
 using System;
 using PingDog.Model;
-using Realterm;
-using PInvokeSerialPort;
 
 namespace PingDog.Interface
 {
     internal class ServerResetter : IServerResetter
     {
         private IPDModel model;
-        private SerialPort serialPort;
 
-        //     private IRealtermIntf terminal;
+        public bool Debug { get { return PDFacade.GetDebugMode(); } }
 
-        public string[] names { get; private set; }
+        public bool TestMode { get { return PDFacade.GetTestMode(); } }
 
         public void ResetServer(bool reset)
         {
-
-            //  terminal = PDFacade.GetTerminal();
-
-            model = PDFacade.GetPDModel();
-             names = model.PortNames;
-            Console.WriteLine();
-            Console.WriteLine("Ports: ");
-            foreach (var name in names)
+           var  serialPort = PDFacade.GetSerialPort();
+            if (TestMode || Debug)
             {
-                Console.WriteLine(name);
+                Console.WriteLine();
+                Console.WriteLine(" Reset? " + reset);
             }
-            Console.WriteLine();
-            if (model.Debug) Console.Write(" Reset? " + reset);
             try
             {
-                Console.Write(" Port Name: "+model.PortName);
-                serialPort = new SerialPort(model.PortName);
-                serialPort.UseRts = HsOutput.Online;
-                if (reset) { serialPort.Open(); } else { serialPort.Close(); }
-            //    terminal.Port = model.PortName;
-           //     terminal.PortOpen = true;
-             //   if (model.Debug) Console.Write(" RTS Before: " + terminal.RTS);
-            //    terminal.RTS = reset; // true kills power to server
-              //  if (model.Debug) Console.Write(" RTS After: " + terminal.RTS);
+                if (reset)
+                {
+                    serialPort.Close();
+                    PDFacade.IsServerOn = false;
+                }
+                else
+                {
+                    if (!serialPort.Online||!PDFacade.IsServerOn)
+                    {
+                        PDFacade.IsServerOn = serialPort.Open(); // Port open removes server power by clearing RTS
+                        if (!PDFacade.IsServerOn) { throw new Exception("Port Not Available"); }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Console.Write("Reset Server Error: " + ex.Message);
+                Console.WriteLine("Reset Server Error: " + ex.Message);                
             }
         }
     }

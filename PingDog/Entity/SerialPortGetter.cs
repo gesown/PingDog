@@ -2,15 +2,15 @@
 using PingDog.Model;
 using System;
 using System.IO.Ports;
+using PInvokeSerialPort;
 
 namespace PingDog.Interface
 {
     internal class SerialPortGetter : ISerialPortGetter
     {
-        public SerialPort GetSerialPort()
+        PInvokeSerialPort.SerialPort ISerialPortGetter.GetSerialPort()
         {
-            IPDModel model = PDFacade.GetPDModel();
-            return new SerialPort(model.PortNames[model.PortIndex]);
+            return PDFacade.GetPDModel().PISerialPort;
         }
     }
 }
