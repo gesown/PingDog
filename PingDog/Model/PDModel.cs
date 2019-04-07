@@ -51,6 +51,11 @@ namespace PingDog.Model
             }
         }
 
+        public bool ServiceMode
+        {
+            get { return bool.Parse(ConfigurationManager.AppSettings["ServiceMode"]); }
+        }
+
         public int PortIndex
         {
             get

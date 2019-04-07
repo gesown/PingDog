@@ -13,5 +13,6 @@ namespace PingDog.Model
         bool TestMode { get;  }
         bool Debug { get; }
         SerialPort PISerialPort { get;  }
+        bool ServiceMode { get; }
     }
 }
