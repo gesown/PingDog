@@ -39,7 +39,7 @@ namespace PingDog.Entity
                         pinger.Dispose();
                     }
                 }
-                Console.WriteLine(" ping ");
+                Console.WriteLine(" ping " + DateTime.Now.Ticks);
                 return pingable;
             }
         }
