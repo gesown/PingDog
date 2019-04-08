@@ -2,8 +2,8 @@
 using PingDog.Interface;
 using PingDog.Entity;
 using PingDog.Factory;
-using Realterm;
 using System.Collections.Generic;
+using Realterm;
 
 namespace PingDog.Facade
 {
@@ -96,6 +96,12 @@ namespace PingDog.Facade
         {
             IWaitTimerIntervalGetter ctg = new WaitTimerIntervalGetter();
             return ctg.GetWaitTimerInterval();
+        }
+
+        public static bool GetServiceMode()
+        {
+            IServiceModeGetter tmg = new ServiceModeGetter();
+            return tmg.GetServiceMode();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Timers;
 using PingDog.Facade;
 using PingDog.Model;
@@ -7,13 +8,14 @@ using Threading = System.Threading;
 
 namespace PingDog
 {
-    class Program
+    public class Program
     {
         public static Timer checkTimer = new Timer();
         public static Timer waitTimer = new Timer();
         private static IPDModel model;
 
         public static bool TestMode { get { return PDFacade.GetTestMode(); } }
+        public static bool ServiceMode { get { return PDFacade.GetServiceMode(); } }
         public static bool Debug { get { return PDFacade.GetDebugMode(); } }
         public static double CheckTimerInterval { get { return PDFacade.GetCheckTimerInterval(); } } // Time to wait for ping response
         public static double WaitTimerInterval { get { return PDFacade.GetWaitTimerInterval(); } } // Time to wait between pings and for server reset
@@ -25,26 +27,40 @@ namespace PingDog
 
         public static int PortIndex { get { return PDFacade.GetPortIndex(); } }
 
-        static void Main(string[] args)
+        // ReSharper disable once ArrangeTypeMemberModifiers
+        public static void Main(string[] args)
         {
-            Console.WriteLine(" Debug Mode: " + Debug);
-            Console.WriteLine(" Test Mode: " + TestMode);
-            Console.WriteLine(" Check Timer Interval: " + CheckTimerInterval);
-            Console.WriteLine(" Wait Timer Interval: " + WaitTimerInterval);
-            Console.WriteLine(" Ip To Ping: " + IpToPing);
-            Console.WriteLine(" Serial Ports Available: ");
-            foreach (var portname in PortNames)
+            if (!ServiceMode)
             {
-                Console.WriteLine(portname);
+                Console.WriteLine(" Debug Mode: " + Debug);
+                Console.WriteLine(" Test Mode: " + TestMode);
+                Console.WriteLine(" Check Timer Interval: " + CheckTimerInterval);
+                Console.WriteLine(" Wait Timer Interval: " + WaitTimerInterval);
+                Console.WriteLine(" Ip To Ping: " + IpToPing);
+                Console.WriteLine(" Serial Ports Available: ");
+                foreach (var portname in PortNames)
+                {
+                    Console.WriteLine(portname);
+                }
+
+                Console.WriteLine(" Serial Port Name Index: " + PortIndex);
+                Console.WriteLine(" Serial Port Name: " + PortName);
             }
-            Console.WriteLine(" Serial Port Name Index: " + PortIndex);
-            Console.WriteLine(" Serial Port Name: " + PortName);
+
             InitializeTimers();
-            Console.WriteLine("Hit Any Key to Exit.");
+            if (!ServiceMode)
+            {
+                Console.WriteLine("Hit Any Key to Exit.");
+            }
+
             Threading.Thread.Sleep(1000);
             PDFacade.ResetServer(false);
             if (!PDFacade.IsServerOn) { DisableTimers(); }
-            Console.Read();
+
+            if (!ServiceMode)
+            {
+                Console.Read();
+            }
         }
 
         private static void DisableTimers()
@@ -83,6 +99,11 @@ namespace PingDog
                 if (Debug) Console.WriteLine("  Server Power On ");
             }
             waitTimer.Enabled = true; // Delay check until server resets or time to ping again
+        }
+
+        public static void EndThread()
+        {
+            Threading.Thread.CurrentThread.Abort();
         }
     }
 }
