@@ -12,7 +12,6 @@ namespace PingDog
     {
         public static Timer checkTimer = new Timer();
         public static Timer waitTimer = new Timer();
-        private static IPDModel model;
 
         public static bool TestMode { get { return PDFacade.GetTestMode(); } }
         public static bool ServiceMode { get { return PDFacade.GetServiceMode(); } }

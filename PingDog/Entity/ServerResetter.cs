@@ -6,7 +6,7 @@ namespace PingDog.Interface
 {
     internal class ServerResetter : IServerResetter
     {
-        private IPDModel model;
+  //      private readonly IPDModel model;
 
         public bool Debug { get { return PDFacade.GetDebugMode(); } }
 
