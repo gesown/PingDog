@@ -5,7 +5,7 @@
     <ProjectGuid>{A9E1E1E6-55D9-4D90-BA11-737968E9343A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ConsoleApplication</AssemblyName>
+    <AssemblyName>PingDog</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -34,13 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.Realterm">
-      <HintPath>..\packages\realterm\Interop.Realterm.dll</HintPath>
+      <HintPath>packages\RealTerm\lib\Interop.Realterm.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="RealTermWrapper">
-      <HintPath>..\packages\realterm\RealTermWrapper.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
