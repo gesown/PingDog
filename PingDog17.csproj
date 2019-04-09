@@ -34,13 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.Realterm">
-      <HintPath>..\packages\realterm\Interop.Realterm.dll</HintPath>
+      <HintPath>packages\RealTerm\lib\Interop.Realterm.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="RealTermWrapper">
-      <HintPath>..\packages\realterm\RealTermWrapper.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
